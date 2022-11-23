@@ -4,6 +4,7 @@ import { serviceProvider } from '../lib/web3auth';
 import { UserContext } from '../lib/UserContext';
 import { WalletContext } from '../lib/WalletContext';
 import Loading from './loading';
+// import { tKey } from '../lib/web3auth';
 
 const Login = () => {
 	const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -39,7 +40,16 @@ const Login = () => {
 			console.log('Private Key', res.privateKey);
 			setUser(res.userInfo);
 			setWallet(res);
+			// console.log(await tKey.initialize()); // 1st Share
 			navigate('/profile');
+			// console.log(await tKey.modules.webStorage.inputShareFromWebStorage()); // 2nd Share
+			// try {
+			// 	const reconstructedKey = await tKey.reconstructKey(); // Recontruct and get the tKey
+			// 	console.log('tkey: ' + reconstructedKey.privKey.toString('hex'));
+			// 	navigate('/profile');
+			// } catch (error) {
+			// 	navigate('/profile');
+			// }
 		} catch {
 			setIsLoggingIn(false);
 		}

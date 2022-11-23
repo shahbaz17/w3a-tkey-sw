@@ -10,21 +10,26 @@ const Profile = () => {
 
 	// Redirect to login page if not loading and no user found
 	useEffect(() => {
+		// console.log(tKey);
 		if (!user) {
 			navigate('/login');
 		}
 		// console.log('User info on profile', user);
 		const tKeyUtil = async () => {
-			console.log(tKey);
+			// console.log(tKey);
 			// console.log(tKey.serviceProvider.postboxKey.toString('hex'));
 			console.log(await tKey.initialize()); // 1st Share
 
 			const indexes = await tKey.getCurrentShareIndexes();
 			console.log('Total number of available shares: ' + indexes.length);
 
+			// console.log(await tKey.modules.webStorage); // Get the deviceShare
+			await tKey.modules.webStorage.inputShareFromWebStorage();
+
 			// Input 2nd Share
-			const webStorageModule = tKey.modules['webStorage'];
-			await webStorageModule.inputShareFromWebStorage();
+			//const webStorageModule = tKey.modules['webStorage'];
+			//await webStorageModule.inputShareFromWebStorage();
+			// console.log(await tKey.modules.webStorage.inputShareFromWebStorage());
 
 			// console.log(await tKey.reconstructKey());
 			const reconstructedKey = await tKey.reconstructKey();
@@ -37,7 +42,7 @@ const Profile = () => {
 			//await tKey.initialize();
 		};
 		tKeyUtil();
-	}, [user, navigate]);
+	}, [navigate, user]);
 
 	const generateNewShareWithSecurityQuestions = async () => {
 		try {
