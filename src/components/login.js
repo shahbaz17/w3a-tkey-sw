@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { torus, tKey, serviceProvider } from '../lib/web3auth';
+import { serviceProvider } from '../lib/web3auth';
 import { UserContext } from '../lib/UserContext';
 import { WalletContext } from '../lib/WalletContext';
 import Loading from './loading';

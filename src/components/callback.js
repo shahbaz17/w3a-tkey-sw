@@ -2,7 +2,7 @@ import { UserContext } from './../lib/UserContext';
 import { WalletContext } from '../lib/WalletContext';
 import { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { torus, tKey } from '../lib/web3auth';
+import { tKey } from '../lib/web3auth';
 import Loading from './loading';
 
 const Callback = () => {
