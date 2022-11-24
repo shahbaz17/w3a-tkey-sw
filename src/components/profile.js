@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../lib/UserContext';
 import Loading from './loading';
 import { tKey } from '../lib/web3auth';
+import BN from 'bn.js';
 
 const Profile = () => {
 	const navigate = useNavigate();
@@ -18,18 +19,23 @@ const Profile = () => {
 		const tKeyUtil = async () => {
 			// console.log(tKey);
 			// console.log(tKey.serviceProvider.postboxKey.toString('hex'));
+			// const importKey = new BN(
+			// 	'9275f976cb2c16f6019dcffbc87bf171cff52226b2919a385a8de286bffde8a1',
+			// 	'hex',
+			// );
 			console.log(await tKey.initialize()); // 1st Share
+			// console.log(await tKey._initializeNewKey({ importKey })); // Technically 2nd Share
 
 			const indexes = await tKey.getCurrentShareIndexes();
 			console.log('Total number of available shares: ' + indexes.length);
 
-			// console.log(await tKey.modules.webStorage); // Get the deviceShare
+			// console.log(await tKey.modules.webStorage); // Get the deviceShare, 2/2 Share
 			await tKey.modules.webStorage.inputShareFromWebStorage();
 
-			// Input 2nd Share
-			//const webStorageModule = tKey.modules['webStorage'];
-			//await webStorageModule.inputShareFromWebStorage();
-			// console.log(await tKey.modules.webStorage.inputShareFromWebStorage());
+			// They can generate a securityQuestions for the next logins and input here as 2nd Share.
+			// await tKey.modules.securityQuestions.inputShareFromSecurityQuestions(
+			// 	'QWERTY@123',
+			// );
 
 			// console.log(await tKey.reconstructKey());
 			const reconstructedKey = await tKey.reconstructKey();
@@ -48,7 +54,7 @@ const Profile = () => {
 		try {
 			await tKey.modules.securityQuestions.generateNewShareWithSecurityQuestions(
 				'QWERTY@123',
-				'whats your new password?',
+				'whats your password?',
 			);
 			const indexes = await tKey.getCurrentShareIndexes();
 			console.log(
@@ -61,7 +67,10 @@ const Profile = () => {
 	};
 
 	const generateNewShare = async () => {
-		console.log(await tKey.generateNewShare());
+		const val = await tKey.generateNewShare();
+		console.log(val);
+		const newval = await tKey.outputShare(val.newShareIndex);
+		console.log(newval);
 		const indexes = await tKey.getCurrentShareIndexes();
 		console.log(
 			'Total number of available shares after Share A/B: ' + indexes.length,

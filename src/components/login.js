@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { serviceProvider } from '../lib/web3auth';
+import { tKey } from '../lib/web3auth';
 import { UserContext } from '../lib/UserContext';
 import { WalletContext } from '../lib/WalletContext';
 import Loading from './loading';
-// import { tKey } from '../lib/web3auth';
 
 const Login = () => {
 	const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -18,7 +17,7 @@ const Login = () => {
 		}
 		const init = async () => {
 			// await torus.init({ skipSw: true }); // with CustomAuth SDK
-			await serviceProvider.init({ skipSw: false }); // with tKey SDK
+			await tKey.serviceProvider.init({ skipSw: false }); // with tKey SDK
 		};
 		init();
 	}, [user, navigate]);
@@ -35,7 +34,7 @@ const Login = () => {
 
 		try {
 			// await torus.triggerLogin(loginParams);
-			const res = await serviceProvider.triggerLogin(loginParams);
+			const res = await tKey.serviceProvider.triggerLogin(loginParams);
 			console.log('Login Response in Sample', res);
 			console.log('Private Key', res.privateKey);
 			setUser(res.userInfo);
