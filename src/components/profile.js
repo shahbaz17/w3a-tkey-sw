@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../lib/UserContext';
 import Loading from './loading';
 import { tKey } from '../lib/web3auth';
-import BN from 'bn.js';
 
 const Profile = () => {
 	const navigate = useNavigate();
@@ -23,14 +22,36 @@ const Profile = () => {
 			// 	'9275f976cb2c16f6019dcffbc87bf171cff52226b2919a385a8de286bffde8a1',
 			// 	'hex',
 			// );
+
+			// const postboxKey = tKey.serviceProvider.postboxKey.toString('hex');
+			// console.log('postboxKey', postboxKey);
+
+			// const shareStore = await tKey.storageLayer.getMetadata({
+			// 	privKey: postboxKey,
+			// });
+			// console.log('shareStore', shareStore);
+
 			console.log(await tKey.initialize()); // 1st Share
+
+			// console.log(await tKey.initialize({ withShare: shareStore })); // with shareStore
 			// console.log(await tKey._initializeNewKey({ importKey })); // Technically 2nd Share
 
-			const indexes = await tKey.getCurrentShareIndexes();
-			console.log('Total number of available shares: ' + indexes.length);
+			// const indexes = await tKey.getCurrentShareIndexes();
+			// console.log('Total number of available shares: ' + indexes.length);
 
+			const { requiredShares } = tKey.getKeyDetails();
+			console.log('requiredShares', requiredShares);
+
+			const deviceShare = await tKey.modules.webStorage.getDeviceShare();
+			console.log('DeviceShare from WebStorage', deviceShare);
+
+			// console.log(
+			// 	await tKey.modules.webStorage.storeDeviceShareOnFileStorage(
+			// 		deviceShare.share.shareIndex,
+			// 	),
+			// );
 			// console.log(await tKey.modules.webStorage); // Get the deviceShare, 2/2 Share
-			await tKey.modules.webStorage.inputShareFromWebStorage();
+			console.log(await tKey.modules.webStorage.inputShareFromWebStorage());
 
 			// They can generate a securityQuestions for the next logins and input here as 2nd Share.
 			// await tKey.modules.securityQuestions.inputShareFromSecurityQuestions(
@@ -38,8 +59,10 @@ const Profile = () => {
 			// );
 
 			// console.log(await tKey.reconstructKey());
-			const reconstructedKey = await tKey.reconstructKey();
-			console.log('tkey: ' + reconstructedKey.privKey.toString('hex'));
+			if (requiredShares === 0) {
+				const reconstructedKey = await tKey.reconstructKey();
+				console.log('tkey: ' + reconstructedKey.privKey.toString('hex'));
+			}
 
 			// const res = await tKey._initializeNewKey({ initializeModules: true });
 			// console.log('response from _initializeNewKey', res);
@@ -53,8 +76,8 @@ const Profile = () => {
 	const generateNewShareWithSecurityQuestions = async () => {
 		try {
 			await tKey.modules.securityQuestions.generateNewShareWithSecurityQuestions(
-				'QWERTY@123',
-				'whats your password?',
+				'Shahbaz',
+				'Welcome to the world?',
 			);
 			const indexes = await tKey.getCurrentShareIndexes();
 			console.log(
@@ -113,6 +136,19 @@ const Profile = () => {
 		console.log(await tKey.outputShareStore(index[1]));
 	};
 
+	const getSeedFromShare = async () => {
+		const shareCreated = await tKey.generateNewShare();
+		const requiredShareStore =
+			shareCreated.newShareStores[shareCreated.newShareIndex.toString('hex')];
+		// remember to include in initializtion modules
+		const serializedShare = await tKey.modules.shareSerialization.serialize(
+			requiredShareStore.share.share,
+			'mnemonic',
+		);
+		console.log(serializedShare);
+		// Now, this serializedShare is a mnemonic which you can display to user/send mail
+	};
+
 	return (
 		<>
 			{!user ? (
@@ -151,6 +187,7 @@ const Profile = () => {
 						<button onClick={outputShareStore}>
 							Output Share Store (Share B)
 						</button>
+						<button onClick={getSeedFromShare}>Get Seed from Share</button>
 					</>
 				)
 			)}

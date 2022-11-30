@@ -7,13 +7,14 @@ import ShareTransferModule from '@tkey/share-transfer';
 // import TorusStorageLayer from '@tkey/storage-layer-torus';
 
 const customAuthArgs = {
-	baseUrl: `${process.env.REACT_APP_BASE_URL}/serviceworker`,
+	// baseUrl: `${process.env.REACT_APP_BASE_URL}/serviceworker`,
+	baseUrl: `${window.location.origin}/serviceworker`,
+	network: 'cyan',
 	// redirectPathName: 'callback',
-	network: 'testnet',
-	uxMode: 'popup', // popup, redirect
-	enableLogging: true,
-	networkUrl:
-		'https://small-long-brook.ropsten.quiknode.pro/e2fd2eb01412e80623787d1c40094465aa67624a',
+	// uxMode: 'popup', // popup, redirect
+	// enableLogging: true,
+	// networkUrl:
+	// 	'https://small-long-brook.ropsten.quiknode.pro/e2fd2eb01412e80623787d1c40094465aa67624a',
 };
 
 const webStorageModule = new WebStorageModule();
