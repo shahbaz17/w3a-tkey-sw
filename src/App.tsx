@@ -7,7 +7,7 @@ import Profile from './components/profile';
 import Wallet from './components/wallet';
 import Callback from './components/callback';
 import Layout from './components/layout';
-import { torus } from './lib/web3auth';
+// import { torus } from './lib/web3auth';
 import { UserContext } from './lib/UserContext';
 import { WalletContext } from './lib/WalletContext';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
@@ -17,7 +17,7 @@ function App() {
 	const [wallet, setWallet] = useState();
 	useEffect(() => {
 		const init = async () => {
-			await torus.init({ skipSw: true });
+			// await torus.init({ skipSw: true });
 		};
 		init();
 	}, []);

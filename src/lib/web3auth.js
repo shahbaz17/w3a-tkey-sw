@@ -1,4 +1,4 @@
-import CustomAuth from '@toruslabs/customauth';
+// import CustomAuth from '@toruslabs/customauth';
 import ThresholdKey from '@tkey/default';
 import WebStorageModule from '@tkey/web-storage';
 import SecurityQuestionsModule from '@tkey/security-questions';
@@ -28,7 +28,7 @@ const shareTransferModule = new ShareTransferModule();
 // 	hostUrl: 'https://metadata.tor.us',
 // });
 
-export const torus = new CustomAuth(customAuthArgs);
+// export const torus = new CustomAuth(customAuthArgs);
 // await torus.init({ skipSw: true });
 
 export const tKey = new ThresholdKey({
