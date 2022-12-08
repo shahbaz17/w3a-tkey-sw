@@ -232,8 +232,18 @@ const Modules = () => {
 					<>
 						<div className='label'>Verifier</div>
 						<div className='profile-info'>{user.verifier}</div>
+						<div className='label'>Core</div>
+						<button onClick={reconstructKey}>
+							Reconstruct tKey
+						</button>
+						<button onClick={generateNewShare}>
+							generateNewShare (Share A/B)
+						</button>
+						<button onClick={outputShareStore}>
+							Output Share Store (Share B)
+						</button>
+						<hr />
 						<div className='label'>Security Questions Modules</div>
-						
 						<button className='one-time-use' onClick={generateNewShareWithSecurityQuestions}>
 							Generate share with password (Share C) - OneTimeUse
 						</button>
@@ -252,18 +262,10 @@ const Modules = () => {
 						<button className='not-working' onClick={saveAnswerOnTkeyStore}>
 							saveAnswerOnTkeyStore (Share C)
 						</button>
-						<div className='label'>Core</div>
-						<button onClick={reconstructKey}>
-							Reconstruct tKey
-						</button>
-						<button onClick={generateNewShare}>
-							generateNewShare (Share A/B)
-						</button>
-						<button onClick={outputShareStore}>
-							Output Share Store (Share B)
-						</button>
+						<hr />
 						<div className='label'>Seed Phrase Module</div>
 						<button onClick={getSeedFromShare}>Get Seed from Share</button>
+						<hr />
 						<div className='label'>Share Transfer Module</div>
 						<button onClick={requestNewShare}>requestNewShare (Share C)</button>
 					</>
