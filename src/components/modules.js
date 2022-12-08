@@ -39,11 +39,8 @@ const Modules = () => {
 			// const indexes = await tKey.getCurrentShareIndexes();
 			// console.log('Total number of available shares: ' + indexes.length);
 
-			const { requiredShares } = tKey.getKeyDetails();
-			console.log('requiredShares', requiredShares);
-
-			const deviceShare = await tKey.modules.webStorage.getDeviceShare();
-			console.log('DeviceShare from WebStorage', deviceShare);		
+			// const deviceShare = await tKey.modules.webStorage.getDeviceShare();
+			// console.log('DeviceShare from WebStorage', deviceShare);		
 			
 			// const checkQuestion = await tKey.modules.securityQuestions.getSecurityQuestions();
 			// console.log(checkQuestion)
@@ -56,7 +53,13 @@ const Modules = () => {
 			// 	),
 			// );
 			// console.log(await tKey.modules.webStorage); // Get the deviceShare, 2/2 Share
+
 			await tKey.modules.webStorage.inputShareFromWebStorage();
+
+			// await inputShareFromSecurityQuestions(); // <--- Input Security Question Share can also be used here to insert.
+
+			const { requiredShares } = tKey.getKeyDetails();
+			console.log('requiredShares', requiredShares);
 
 			// They can generate a securityQuestions for the next logins and input here as 2nd Share.
 			// await tKey.modules.securityQuestions.inputShareFromSecurityQuestions(
@@ -64,9 +67,9 @@ const Modules = () => {
 			// );
 
 			// console.log(await tKey.reconstructKey());
-			if (requiredShares === 0) {
+			if (requiredShares <= 0) {
 				const reconstructedKey = await tKey.reconstructKey();
-				console.log('tkey: ' + reconstructedKey.privKey.toString('hex'));
+				console.log('tKey: ' + reconstructedKey.privKey.toString('hex'));
 			}
 
 			// const res = await tKey._initializeNewKey({ initializeModules: true });
@@ -78,17 +81,18 @@ const Modules = () => {
 		tKeyUtil();
 	}, [navigate, user]);
 
+	// Security Questions Modules
 	const generateNewShareWithSecurityQuestions = async () => {
 		try {
 			await tKey.modules.securityQuestions.generateNewShareWithSecurityQuestions(
-				'Shahbaz',
-				'What is your name?',
+				'QWERTY@12345',
+				'What is your password?',
 			);
-			const indexes = await tKey.getCurrentShareIndexes();
-			console.log(
-				'Total number of available shares after Share C: ' + indexes.length,
-			);
-			await tKey.reconstructKey();
+			// const indexes = await tKey.getCurrentShareIndexes();
+			// console.log(
+			// 	'Total number of available shares after Share C: ' + indexes.length,
+			// );
+			console.log(await tKey.reconstructKey());
 		} catch (error) {
 			console.error(error);
 		}
@@ -100,17 +104,17 @@ const Modules = () => {
 				'Shahbaz',
 				'What is your name?',
 			);
-			const indexes = await tKey.getCurrentShareIndexes();
-			console.log(
-				'Total number of available shares after changing security question and answer: ' + indexes.length,
-			);
-			await tKey.reconstructKey();
-			await saveAnswerOnTkeyStore();
+			// const indexes = await tKey.getCurrentShareIndexes();
+			// console.log(
+			// 	'Total number of available shares after changing security question and answer: ' + indexes.length,
+			// );
+			console.log(await tKey.reconstructKey());
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
+	// Not working, can be checked calling getAnswer()
 	const saveAnswerOnTkeyStore = async () => {
 		try {
 			await tKey.modules.securityQuestions.saveAnswerOnTkeyStore(
@@ -130,6 +134,7 @@ const Modules = () => {
 		}
 	};
 
+	// Not working
 	const getAnswer = async () => {
 		try {
 			const result = await tKey.modules.securityQuestions.getAnswer();
@@ -139,16 +144,41 @@ const Modules = () => {
 		}
 	};
 
+	const inputShareFromSecurityQuestions = async () => {
+		try {
+			await tKey.modules.securityQuestions.inputShareFromSecurityQuestions('Shahbaz');
+			await reconstructKey();
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	// Core
+	const reconstructKey = async() => {
+		await initializeKey();
+		console.log(await tKey.reconstructKey());
+	}
+
+	const initializeKey = async() => {
+		console.log(await tKey.initialize());
+	}
+
 	const generateNewShare = async () => {
 		const val = await tKey.generateNewShare();
 		console.log(val);
-		const newval = await tKey.outputShare(val.newShareIndex);
-		console.log(newval);
+		const newVal = await tKey.outputShare(val.newShareIndex);
+		console.log(newVal);
 		const indexes = await tKey.getCurrentShareIndexes();
 		console.log(
-			'Total number of available shares after Share A/B: ' + indexes.length,
+			'Total number of available shares after Share B: ' + indexes.length,
 		);
 		await tKey.reconstructKey();
+	};
+
+	const outputShareStore = async () => {
+		const index = await tKey.getCurrentShareIndexes();
+		console.log(index);
+		console.log(await tKey.outputShareStore(index[0]));
 	};
 
 	const requestNewShare = async () => {
@@ -180,12 +210,6 @@ const Modules = () => {
 		console.log('Out getKeyDetails', await tKey.getKeyDetails());
 	};
 
-	const outputShareStore = async () => {
-		const index = await tKey.getCurrentShareIndexes();
-		console.log(index);
-		console.log(await tKey.outputShareStore(index[1]));
-	};
-
 	const getSeedFromShare = async () => {
 		const shareCreated = await tKey.generateNewShare();
 		const requiredShareStore =
@@ -210,14 +234,17 @@ const Modules = () => {
 						<div className='profile-info'>{user.verifier}</div>
 						<div className='label'>Security Questions Modules</div>
 						
-						<button onClick={generateNewShareWithSecurityQuestions}>
-							Generate share with password (Share C)
+						<button className='one-time-use' onClick={generateNewShareWithSecurityQuestions}>
+							Generate share with password (Share C) - OneTimeUse
 						</button>
 						<button onClick={changeQuestionAnswer}>
 							Change Question Answer (Share C)
 						</button>
 						<button onClick={getQuestion}>
 							Get Question (Share C)
+						</button>
+						<button onClick={inputShareFromSecurityQuestions}>
+							inputShareFromSecurityQuestions (Share C)
 						</button>
 						<button className='not-working' onClick={getAnswer}>
 							Get Answer (Share C)
@@ -226,30 +253,27 @@ const Modules = () => {
 							saveAnswerOnTkeyStore (Share C)
 						</button>
 						<div className='label'>Core</div>
+						<button onClick={reconstructKey}>
+							Reconstruct tKey
+						</button>
 						<button onClick={generateNewShare}>
 							generateNewShare (Share A/B)
 						</button>
-						<button onClick={requestNewShare}>requestNewShare (Share C)</button>
 						<button onClick={outputShareStore}>
 							Output Share Store (Share B)
 						</button>
 						<div className='label'>Seed Phrase Module</div>
 						<button onClick={getSeedFromShare}>Get Seed from Share</button>
+						<div className='label'>Share Transfer Module</div>
+						<button onClick={requestNewShare}>requestNewShare (Share C)</button>
 					</>
 				)
 			)}
 			<style>{`
         .label {
-          font-size: 12px;
+          font-size: 16px;
           color: #0364ff;
           margin: 10px 0 5px;
-        }
-        .profile-info {
-          font-size: 15px;
-          word-wrap: break-word;
-        }
-        img{
-          border-radius: 50%;
         }
 		.not-working{
 			color: red;
@@ -258,6 +282,14 @@ const Modules = () => {
 		.not-working:hover{
 			color: white;
 			background: red;
+		}
+		.one-time-use{
+			color: orange;
+			border-color: orange;
+		}
+		.one-time-use:hover{
+			color: white;
+			background: orange;
 		}
       `}</style>
 		</>
