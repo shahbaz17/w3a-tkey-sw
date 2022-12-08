@@ -263,13 +263,25 @@ const Modules = () => {
 		// const requiredShareStore = shareCreated.newShareStores[shareCreated.newShareIndex.toString('hex')];
 		// remember to include it in initialization modules
 		console.log(deviceShare.share.share)
+		console.log(deviceShare.share.share.toString('hex'));
 		const serializedShare = await tKey.modules.shareSerialization.serialize(
 			deviceShare.share.share,
 			'mnemonic',
 		);
 		console.log(serializedShare);
+		return serializedShare;
 		// Now, this serializedShare is a mnemonic which you can display to user/send mail
 	};
+
+	const getShareFromSeed = async() => {
+		const serializedShare = await getSeedFromShare();
+		const share = await tKey.modules.shareSerialization.deserialize(
+			serializedShare,
+			'mnemonic',
+		);
+		console.log(share);
+		console.log(share.toString('hex'));
+	}
 
 	return (
 		<>
@@ -330,6 +342,7 @@ const Modules = () => {
 						<hr />
 						<div className='label'>Seed Phrase Module</div>
 						<button onClick={getSeedFromShare}>Get Seed from Share</button>
+						<button onClick={getShareFromSeed}>Get Share from Share</button>
 						<hr />
 						<div className='label'>Share Transfer Module</div>
 						<button onClick={requestNewShare}>requestNewShare (Share C)</button>
