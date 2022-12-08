@@ -4,6 +4,7 @@ import './App.css';
 import Home from './components/home';
 import Login from './components/login';
 import Profile from './components/profile';
+import Modules from './components/modules';
 import Wallet from './components/wallet';
 import Callback from './components/callback';
 import Layout from './components/layout';
@@ -31,6 +32,7 @@ function App() {
 							<Route path='/' element={<Home />} />
 							<Route path='/login' element={<Login />} />
 							<Route path='/profile' element={<Profile />} />
+							<Route path='/modules' element={<Modules />} />
 							<Route path='/wallet' element={<Wallet />} />
 							<Route path='/callback' element={<Callback />} />
 						</Routes>

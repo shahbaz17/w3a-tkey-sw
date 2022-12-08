@@ -24,6 +24,9 @@ const Header = () => {
 								<button onClick={() => navigate('/profile')}>Profile</button>
 							</li>
 							<li>
+								<button onClick={() => navigate('/modules')}>tKey</button>
+							</li>
+							<li>
 								<button onClick={() => navigate('/wallet')}>Wallet</button>
 							</li>
 							<li>
