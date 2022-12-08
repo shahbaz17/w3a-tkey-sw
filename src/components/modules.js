@@ -257,13 +257,14 @@ const Modules = () => {
 
 	// Seed Phrase Module
 	const getSeedFromShare = async () => {
-		const shareCreated = await tKey.generateNewShare();
-		console.log(shareCreated)
-		const requiredShareStore =
-			shareCreated.newShareStores[shareCreated.newShareIndex.toString('hex')];
+		// const shareCreated = await tKey.generateNewShare();
+		// console.log(shareCreated)
+		const deviceShare = await getDeviceShare();
+		// const requiredShareStore = shareCreated.newShareStores[shareCreated.newShareIndex.toString('hex')];
 		// remember to include it in initialization modules
+		console.log(deviceShare.share.share)
 		const serializedShare = await tKey.modules.shareSerialization.serialize(
-			requiredShareStore.share.share,
+			deviceShare.share.share,
 			'mnemonic',
 		);
 		console.log(serializedShare);
