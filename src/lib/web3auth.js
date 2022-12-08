@@ -9,12 +9,11 @@ import ShareTransferModule from '@tkey/share-transfer';
 const customAuthArgs = {
 	// baseUrl: `${process.env.REACT_APP_BASE_URL}/serviceworker`,
 	baseUrl: `${window.location.origin}/serviceworker`,
-	network: 'cyan',
+	network: 'testnet',
 	// redirectPathName: 'callback',
 	// uxMode: 'popup', // popup, redirect
 	// enableLogging: true,
-	// networkUrl:
-	// 	'https://small-long-brook.ropsten.quiknode.pro/e2fd2eb01412e80623787d1c40094465aa67624a',
+	networkUrl: 'https://small-long-brook.ropsten.quiknode.pro/e2fd2eb01412e80623787d1c40094465aa67624a',
 };
 
 const webStorageModule = new WebStorageModule();

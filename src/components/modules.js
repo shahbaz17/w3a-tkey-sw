@@ -178,9 +178,54 @@ const Modules = () => {
 	const outputShareStore = async () => {
 		const index = await tKey.getCurrentShareIndexes();
 		console.log(index);
-		console.log(await tKey.outputShareStore(index[0]));
+		const result = await tKey.outputShareStore(index[0]);
+		console.log(result);
+		return result;
 	};
 
+	const inputShareStoreSafe = async () => {
+		const shareStore = await outputShareStore();
+		console.log(await tKey.inputShareStoreSafe(shareStore));
+	};
+
+	const outputShare = async () => {
+		const index = await tKey.getCurrentShareIndexes();
+		// console.log(index);
+		const result = await tKey.outputShare(index[0])
+		console.log(result);
+		return result;
+	};
+
+	const inputShare = async () => {
+		const share = await outputShare();
+		// console.log(share)
+		console.log(await tKey.inputShare(share));
+	};
+
+	// Upon deleting the share, subsequent logins will through error: Share was deleted.
+	const deleteShare = async () => {
+		const index = await tKey.getCurrentShareIndexes();
+		console.log(index)
+		console.log(await tKey.deleteShare(index[6]));
+	};
+
+	// Web Storage Module
+	const getDeviceShare = async() => {
+		const result = await tKey.modules.webStorage.getDeviceShare();
+		console.log(result);
+		return result;
+	}
+
+	const storeDeviceShare = async() => {
+		const deviceShare = await getDeviceShare()
+		await tKey.modules.webStorage.storeDeviceShare(deviceShare);
+	}
+
+	const inputShareFromWebStorage = async() => {
+		await tKey.modules.webStorage.inputShareFromWebStorage();
+	}
+
+	// Share Transfer Module
 	const requestNewShare = async () => {
 		console.log('In getKeyDetails', await tKey.getKeyDetails());
 		const result_requestNewShare =
@@ -210,11 +255,13 @@ const Modules = () => {
 		console.log('Out getKeyDetails', await tKey.getKeyDetails());
 	};
 
+	// Seed Phrase Module
 	const getSeedFromShare = async () => {
 		const shareCreated = await tKey.generateNewShare();
+		console.log(shareCreated)
 		const requiredShareStore =
 			shareCreated.newShareStores[shareCreated.newShareIndex.toString('hex')];
-		// remember to include in initializtion modules
+		// remember to include it in initialization modules
 		const serializedShare = await tKey.modules.shareSerialization.serialize(
 			requiredShareStore.share.share,
 			'mnemonic',
@@ -234,13 +281,25 @@ const Modules = () => {
 						<div className='profile-info'>{user.verifier}</div>
 						<div className='label'>Core</div>
 						<button onClick={reconstructKey}>
-							Reconstruct tKey
+							Reconstruct tKey ( calling initialize() internally )
 						</button>
 						<button onClick={generateNewShare}>
-							generateNewShare (Share A/B)
+							generateNewShare (Share B)
 						</button>
 						<button onClick={outputShareStore}>
-							Output Share Store (Share B)
+							Output Share Store
+						</button>
+						<button className='not-sure' onClick={inputShareStoreSafe}>
+							Input Share Store Safe
+						</button>
+						<button onClick={outputShare}>
+							Output Share
+						</button>
+						<button className='not-sure' onClick={inputShare}>
+							Input Share
+						</button>
+						<button onClick={deleteShare}>
+							Delete Share [ShareIndex = 6]
 						</button>
 						<hr />
 						<div className='label'>Security Questions Modules</div>
@@ -262,6 +321,11 @@ const Modules = () => {
 						<button className='not-working' onClick={saveAnswerOnTkeyStore}>
 							saveAnswerOnTkeyStore (Share C)
 						</button>
+						<hr />
+						<div className='label'>Web Storage Module</div>
+						<button onClick={getDeviceShare}>Get Device Share</button>
+						<button onClick={storeDeviceShare}>Store Device Share</button>
+						<button onClick={inputShareFromWebStorage}>Input Share From Web Storage</button>
 						<hr />
 						<div className='label'>Seed Phrase Module</div>
 						<button onClick={getSeedFromShare}>Get Seed from Share</button>
@@ -292,6 +356,14 @@ const Modules = () => {
 		.one-time-use:hover{
 			color: white;
 			background: orange;
+		}
+		.not-sure{
+			color: gray;
+			border-color: gray;
+		}
+		.not-sure:hover{
+			color: white;
+			background: gray;
 		}
       `}</style>
 		</>
