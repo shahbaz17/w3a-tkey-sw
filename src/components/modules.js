@@ -262,8 +262,8 @@ const Modules = () => {
 		const deviceShare = await getDeviceShare();
 		// const requiredShareStore = shareCreated.newShareStores[shareCreated.newShareIndex.toString('hex')];
 		// remember to include it in initialization modules
-		console.log(deviceShare.share.share)
-		console.log(deviceShare.share.share.toString('hex'));
+		// console.log(deviceShare.share.share)
+		// console.log(deviceShare.share.share.toString('hex'));
 		const serializedShare = await tKey.modules.shareSerialization.serialize(
 			deviceShare.share.share,
 			'mnemonic',
@@ -280,7 +280,7 @@ const Modules = () => {
 			'mnemonic',
 		);
 		console.log(share);
-		console.log(share.toString('hex'));
+		// console.log(share.toString('hex'));
 	}
 
 	return (
