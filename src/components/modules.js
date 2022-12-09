@@ -255,7 +255,7 @@ const Modules = () => {
 		console.log('Out getKeyDetails', await tKey.getKeyDetails());
 	};
 
-	// Seed Phrase Module
+	// Share Serialization Module
 	const getSeedFromShare = async () => {
 		// const shareCreated = await tKey.generateNewShare();
 		// console.log(shareCreated)
@@ -340,7 +340,7 @@ const Modules = () => {
 						<button onClick={storeDeviceShare}>Store Device Share</button>
 						<button onClick={inputShareFromWebStorage}>Input Share From Web Storage</button>
 						<hr />
-						<div className='label'>Seed Phrase Module</div>
+						<div className='label'>Share Serialization Module</div>
 						<button onClick={getSeedFromShare}>Get Seed from Share</button>
 						<button onClick={getShareFromSeed}>Get Share from Share</button>
 						<hr />
