@@ -338,10 +338,10 @@ const Modules = () => {
 						<button onClick={inputShareFromSecurityQuestions}>
 							inputShareFromSecurityQuestions (Share C)
 						</button>
-						<button className='not-working' onClick={getAnswer}>
+						<button onClick={getAnswer}>
 							Get Answer (Share C)
 						</button>
-						<button className='not-working' onClick={saveAnswerOnTkeyStore}>
+						<button onClick={saveAnswerOnTkeyStore}>
 							saveAnswerOnTkeyStore (Share C)
 						</button>
 						<hr />

@@ -19,7 +19,7 @@ const customAuthArgs = {
 };
 
 const webStorageModule = new WebStorageModule();
-const securityQuestionsModule = new SecurityQuestionsModule();
+const securityQuestionsModule = new SecurityQuestionsModule(true);
 const shareTransferModule = new ShareTransferModule();
 const privateKeyModule = new PrivateKeyModule([SECP256K1Format, ED25519Format]);
 const seedPhraseModule = new SeedPhraseModule([MetamaskSeedPhraseFormat]);
