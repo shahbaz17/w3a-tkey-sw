@@ -283,6 +283,16 @@ const Modules = () => {
 		// console.log(share.toString('hex'));
 	}
 
+	// Private Key Module
+	const setPrivateKey = async() => {
+		await tKey.modules.privateKeyModule.setPrivateKey('ed25519');
+	}
+
+	const getPrivateKeys = async() => {
+		const result = await tKey.modules.privateKeyModule.getPrivateKeys();
+		console.log(result);
+	}
+
 	return (
 		<>
 			{!user ? (
@@ -343,6 +353,12 @@ const Modules = () => {
 						<div className='label'>Share Serialization Module</div>
 						<button onClick={getSeedFromShare}>Get Seed from Share</button>
 						<button onClick={getShareFromSeed}>Get Share from Share</button>
+						<hr />
+						<div className='label'>Seed Phrase Module</div>
+						<hr />
+						<div className='label'>Private Key Module</div>
+						<button className='not-working' onClick={setPrivateKey}>Set Private Key</button>
+						<button onClick={getPrivateKeys}>Get Private Keys</button>
 						<hr />
 						<div className='label'>Share Transfer Module</div>
 						<button onClick={requestNewShare}>requestNewShare (Share C)</button>
