@@ -5,17 +5,18 @@ import SecurityQuestionsModule from '@tkey/security-questions';
 import ShareTransferModule from '@tkey/share-transfer';
 // import TorusServiceProvider from '@tkey/service-provider-torus';
 // import TorusStorageLayer from '@tkey/storage-layer-torus';
-import PrivateKeyModule, {SECP256K1Format, ED25519Format} from "@tkey/private-keys";
-import SeedPhraseModule, {MetamaskSeedPhraseFormat} from "@tkey/seed-phrase";
+import PrivateKeyModule, { SECP256K1Format, ED25519Format } from "@tkey/private-keys";
+import SeedPhraseModule, { MetamaskSeedPhraseFormat } from "@tkey/seed-phrase";
 
 const customAuthArgs = {
 	// baseUrl: `${process.env.REACT_APP_BASE_URL}/serviceworker`,
 	baseUrl: `${window.location.origin}/serviceworker`,
 	network: 'testnet',
+	web3AuthClientId: "BNnqqfVr_v50ERS-1DmdirJ7DiToisryYOFRxchtYSHP0RX01Ca-I05XSdFnXjHRbx3dIqeqOLxrBay8RmxwpOE"
 	// redirectPathName: 'callback',
 	// uxMode: 'popup', // popup, redirect
 	// enableLogging: true,
-	networkUrl: 'https://small-long-brook.ropsten.quiknode.pro/e2fd2eb01412e80623787d1c40094465aa67624a',
+	// networkUrl: 'https://small-long-brook.ropsten.quiknode.pro/e2fd2eb01412e80623787d1c40094465aa67624a',
 };
 
 const webStorageModule = new WebStorageModule();

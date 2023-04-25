@@ -27,7 +27,7 @@ const Login = () => {
 
 		const loginParams = {
 			typeOfLogin: 'google',
-			verifier: 'w3a-tkey-google',
+			verifier: 'web3auth-google-example',
 			clientId:
 				'774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com',
 		};
